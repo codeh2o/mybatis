@@ -59,6 +59,7 @@ public class Goods {
     }
 
     public Boolean getFreeDelivery() {
+
         return isFreeDelivery;
     }
 

@@ -8,7 +8,14 @@
     select * from t_goods order by goods_id desc limit 10;
   </select>
 
-    <select id="selectAll" resultType="com.imooc.myBatis.entity.Goods">
-    select * from t_goods order by goods_id desc limit 10;
+  <select id="selectByID" resultType="com.imooc.myBatis.entity.Goods" parameterType="Integer">
+    select * from t_goods where goods_id = #{value}
+  </select>
+    <select id="selectByPriceRange" resultType="com.imooc.myBatis.entity.Goods" parameterType="java.util.Map">
+    select * from t_goods
+        where
+          current_price between  #{min} and #{max}
+        order by current_price
+        limit 0,#{limit}
   </select>
 </mapper>

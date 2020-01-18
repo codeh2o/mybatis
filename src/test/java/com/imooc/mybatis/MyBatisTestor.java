@@ -11,7 +11,9 @@ import org.junit.Test;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MyBatisTestor {
     @Test
@@ -55,14 +57,52 @@ public class MyBatisTestor {
         try {
             sqlSession = MyBatisUtils.openSession();
             List<Goods> list = sqlSession.selectList("goods.selectAll");
-            for (Goods g:list){
+            for (Goods g : list) {
                 System.out.println(g.getTitle());
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             throw e;
-        }finally {
+        } finally {
             MyBatisUtils.closeSession(sqlSession);
         }
 
+    }
+
+    @Test
+    public void testSelectGoodsByID() throws Exception {
+        SqlSession sqlSession = null;
+        try {
+            sqlSession = MyBatisUtils.openSession();
+            Goods goods = sqlSession.selectOne("goods.selectByID", 1234);
+            System.out.println(goods.getTitle());
+
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            MyBatisUtils.closeSession(sqlSession);
+        }
+    }
+
+    @Test
+    public void testSelectGoodsByPriceRange() throws Exception {
+        SqlSession sqlSession = null;
+        try {
+            sqlSession = MyBatisUtils.openSession();
+            Map param = new HashMap();
+            param.put("min", 200);
+            param.put("max", 300);
+            param.put("limit", 20);
+
+            List<Goods> list = sqlSession.selectList("goods.selectByPriceRange", param);
+            for (Goods g : list) {
+                System.out.println(g.getTitle() + ": " + g.getCurrentPrice());
+            }
+
+
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            MyBatisUtils.closeSession(sqlSession);
+        }
     }
 }
